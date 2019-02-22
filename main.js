@@ -27,7 +27,28 @@ TypeWriter.prototype.type = function() {
 	// Insert txt into element
 	this.txtElement.innerHTML = `<span class="txt">${this.txt}</span>`;
 
-	setTimeout(() => this.type(), 500)
+	// Initial Type Speed
+	let typeSpeed = 300;
+
+	if(this.isDeleting) {
+		typeSpeed /= 2;
+	}
+
+	// If word is complete
+	if(!this.isDeleting && this.txt === fullTxt) {
+		// Make pause at end
+		typeSpeed = this.wait;
+		// Set delete to true
+		this.isDeleting = true;
+	} else if(this.isDeleting && this.txt === '') {
+		this.isDeleting = false;
+		// Move to next word
+		this.wordIndex++;
+		// Pause before start typing
+		typeSpeed = 500;
+	}
+
+	setTimeout(() => this.type(), typeSpeed)
 }
 
 // Init On Dom Load
